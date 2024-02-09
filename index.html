@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>This is a title</title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<style>
+		body {
+			background: radial-gradient(circle, rgba(0,0,192,1) 0%, rgba(0,0,128,1) 100%);
+			text-align: center;
+			font-family: Copperplate,Copperplate Gothic Light,fantasy;
+		}
+		#eulerBox {
+			width: 90%;
+			max-width: 90%;
+			max-height: 90%;
+			background-color: gray;
+			position: absolute;
+  			top: 50%;
+  			left: 50%;
+  			transform: translate(-50%, -50%);
+			font-size: 30px;
+		}
+		button {
+			width: 10%;
+			height: 8%;
+			border: 2px solid #000000;
+			background: radial-gradient(circle, rgb(16,16,192,1) 0%, rgba(16,16,128,1) 100%);
+			position: absolute;
+  			top: 90%;
+  			left: 50%;
+  			transform: translate(-50%, -50%);
+			font-family: inherit;
+			font-size: inherit;
+		}
+	</style>
+	<script>
+		let euler = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746639193200305992181741359662904357290033429526059563073813232862794349076323382988075319525101901157383418793070215408914993488416750924476146066808226480016847741185374234544243710753907774499206955170276183860626133138458300075204493382656029760673711320070932870912744374704723069697720931014169283681902551510865746377211125238978442505695369677078544996996794686445490598793163688923009879312";
+		let number = "2.";
+		let score = 0;
+		let highscore = 0;
+		setTimeout(function() {
+			eulerBox.innerText = "Start!"
+			setTimeout(function() {
+				eulerBox.setAttribute("contenteditable", true);
+				eulerBox.innerText = number;
+			}, 1000);
+		}, 2000);
+		function checkDigit() {
+			if($.trim($('#eulerBox').text()) == euler.substr(0,$.trim($('#eulerBox').text()).length)) {
+				score = ($.trim($('#eulerBox').text()).length-2);
+				console.log("------------------------");
+				console.log("Text in eulerBox: " + $.trim($('#eulerBox').text()));
+				console.log("Text in euler number: " + euler.substr(0,$.trim($('#eulerBox').text()).length));
+				console.log($.trim($('#eulerBox').text()) == euler.substr(0,$.trim($('#eulerBox').text()).length))
+				console.log("Score: " + score);
+				scoreDisplay.innerText = "Current Score: " + score;
+				if (score > highscore) {
+					highscore = score;
+					highscoreDisplay.innerText = "High Score: " + highscore;
+				}
+			} else {
+				score = ($.trim($('#eulerBox').text()).length-2);
+				console.log("------------------------");
+				console.log("Text in eulerBox: " + $.trim($('#eulerBox').text()));
+				console.log("Text in euler number: " + euler.substr(0,$.trim($('#eulerBox').text()).length));
+				console.log($.trim($('#eulerBox').text()) == euler.substr(0,$.trim($('#eulerBox').text()).length));
+				console.log("Score: " + score);
+				console.log("fail");
+				incorrectDigit();
+			}
+		}
+		function incorrectDigit() {
+			eulerBox.setAttribute("contenteditable", false);
+			document.getElementById("eulerBox").style.fontSize = "150px";
+			eulerBox.innerText = "Incorrect." 
+			setTimeout(function() {
+				document.getElementById("eulerBox").style.fontSize = "60px";
+				eulerBox.innerText = "Restarting.";
+				setTimeout(function() {
+					eulerBox.innerText = "Restarting..";
+					setTimeout(function() {
+						eulerBox.innerText = "Restarting...";
+						setTimeout(restart, 1000);
+					}, 500);
+				}, 500);
+			}, 2000);
+		}
+		function restart() {
+			document.getElementById("eulerBox").style.fontSize = "30px";
+			let number = "2.";
+			let score = 0;
+			eulerBox.innerText = "Start!"
+			scoreDisplay.innerText = "Current Score: " + score;
+			setTimeout(function() {
+				eulerBox.setAttribute("contenteditable", true);
+				eulerBox.innerText = number;
+			}, 1000);
+			setTimeout(function() {
+				document.getElementById("eulerDigitsButton").onclick = displayEulerDigits;
+			}, 2000);
+		}
+		function displayEulerDigits() {
+			document.getElementById("eulerBox").style.fontSize = "25px";
+			let number;
+			let score = 0;
+			eulerBox.innerText = euler;
+			scoreDisplay.innerText = "Current Score: " + score;
+			eulerBox.setAttribute("contenteditable", false);
+			setTimeout(function() {
+				document.getElementById("eulerDigitsButton").onclick  = restart;
+			}, 2000);
+		}
+	</script>
+</head>
+<body>
+	<div id="eulerBox" style="word-break:break-all;" contenteditable="false" oninput="checkDigit()">Welcome!</div>
+	<div id="highscoreDisplay" style="font-size:300%">High Score: 0</div>
+	<div id="scoreDisplay" style="font-size:300%">Current Score: 0</div>
+	<button id="eulerDigitsButton" style="position:absolute;top:px" onclick="displayEulerDigits()">Euler's Digits</button>
+</body>
+</html>
