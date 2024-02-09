@@ -1,13 +1,28 @@
 body {
-	width: 100px;
-    height: 100px;
-    background-color: red;
-    
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    
-    margin: auto;
+	background: radial-gradient(circle, rgba(0,0,192,1) 0%, rgba(0,0,128,1) 100%);
+	text-align: center;
+	font-family: Copperplate,Copperplate Gothic Light,fantasy;
+}
+#eulerBox {
+	width: 90%;
+	max-width: 90%;
+	max-height: 90%;
+	background-color: gray;
+	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+	font-size: 30px;
+}
+button {
+	width: 10%;
+	height: 8%;
+	border: 2px solid #000000;
+	background: radial-gradient(circle, rgb(16,16,192,1) 0%, rgba(16,16,128,1) 100%);
+	position: absolute;
+  	top: 90%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+	font-family: inherit;
+	font-size: inherit;
 }
