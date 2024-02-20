@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gum</title>
+	<!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<style>
+		body {
+	background: radial-gradient(circle, rgba(0,0,192,1) 0%, rgba(0,0,128,1) 100%);
+	text-align: center;
+	font-family: Copperplate,Copperplate Gothic Light,fantasy;
+}
+#gumBox {
+	width: 90%;
+	max-width: 90%;
+	max-height: 90%;
+	background-color: gray;
+	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+	font-size: 30px;
+}
+button {
+	width: 10%;
+	height: 8%;
+	border: 2px solid #000000;
+	background: radial-gradient(circle, rgb(16,16,192,1) 0%, rgba(16,16,128,1) 100%);
+	position: absolute;
+	display: none;
+  	top: 90%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+	font-family: inherit;
+	font-size: 100px;
+}
+	</style>
+	<script>
+		let stage = 0;
+		let gumCount = 0;
+		let gumClicks = 0;
+		let gumClicked = 0;
+		let gumButtonFontSize = 100;
+		setTimeout(function() {
+			gumBox.innerText = "Type \"gum\" 100 times";
+			setTimeout(function() {
+				gumBox.innerText = "Go ahead.";
+				setTimeout(function() {
+					gumBox.innerText = "";
+					gumBox.setAttribute("contenteditable", true);
+					setUserCaret();
+				}, 500);
+			}, 2000);
+		}, 3000);
+		function setUserCaret() {
+			var gumElement = document.getElementById("gumBox");
+			var gumRange = document.createRange();
+			var gumSelection = window.getSelection();
+			gumRange.setStart(document.getElementById('gumBox'), 0);
+			gumRange.setEnd(document.getElementById('gumBox'), 0);
+			gumRange.collapse(true);
+			gumSelection.removeAllRanges();
+			gumSelection.addRange(gumRange);
+			gumElement.focus();
+		}
+		function checkForGum() {
+			if($.trim($('#gumBox').text()) == "gum" && gumCount < 100) {
+				gumCount++;
+				console.log(gumCount);
+				setTimeout(function() {
+					gumBox.innerText = "";
+					gumBox.setAttribute("contenteditable", true);
+					setUserCaret();
+				}, 50);
+				if (gumCount == 100) {
+					gumBox.setAttribute("contenteditable", false);
+					setTimeout(function() {
+						gumBox.setAttribute("contenteditable", false);
+						gumBox.innerText = "Click the \"gum\" button 100 times";
+						setTimeout(function() {
+							gumBox.innerText = "";
+							gumButton.style.display = "block";
+						}, 3000);
+					}, 1000);
+				}
+			}	
+		}
+		function checkGumButton() {
+			if(gumClicks < 100) {
+				gumClicks++;
+				gumButtonFontSize -= 0.8
+				console.log(gumClicks);
+				gumButton.style.height = 250-(gumClicks*2) + "px";
+				gumButton.style.width = 500-(gumClicks*4) + "px";
+				gumButton.style.fontSize = gumButtonFontSize + "px";
+				if (gumClicks == 100) {
+					gumButton.style.display = "none";
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="gumBox" style="word-break:break-all;" contenteditable="false" oninput="checkForGum()">You need to stop wanting gum.</div>
+	<button id="gumButton" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); height:250px; width:500px;" onclick="checkGumButton()">Gum.</button>
+</body>
+</html>
