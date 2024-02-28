@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gum</title>
+	<!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<style>
+		body {
+			background: radial-gradient(circle, rgba(0,0,192,1) 0%, rgba(0,0,128,1) 100%);
+			text-align: center;
+			font-family: Copperplate,Copperplate Gothic Light,fantasy;
+		}
+		#gumBox {
+			width: 90%;
+			height: 32px;
+			max-width: 90%;
+			max-height: 90%;
+			background-color: gray;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 30px;
+		}
+		button {
+			width: 10%;
+			height: 8%;
+			border: 2px solid #000000;
+			background: radial-gradient(circle, rgb(16,16,192,1) 0%, rgba(16,16,128,1) 100%);
+			position: absolute;
+			display: none;
+			top: 90%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-family: inherit;
+			font-size: 100px;
+		}
+	</style>
+	<script>
+		let stage = 0;
+		let gumCount = 0;
+		let gumClicks = 0;
+		let mugCount = 0;
+		let mugClicks = 0;
+		let buttonMoveInterval = 2000;
+		
+		let buttonInterval = setInterval(function() {
+			if(mugCount == 100) {
+				gumButton.style.left = Math.floor(Math.random() * (81) + 10) + "%";
+				gumButton.style.top = Math.floor(Math.random() * (81) + 10) + "%";
+			}
+		}, buttonMoveInterval);
+			
+		setTimeout(function() {
+			gumBox.innerText = "Type \"gum\" 100 times";
+			setTimeout(function() {
+				gumBox.innerText = "Go ahead.";
+				setTimeout(function() {
+					gumBox.innerText = "";
+					gumBox.setAttribute("contenteditable", true);
+					setUserCaret();
+				}, 500);
+			}, 2000);
+		}, 3000);
+		function setUserCaret() {
+			var gumElement = document.getElementById("gumBox");
+			var gumRange = document.createRange();
+			var gumSelection = window.getSelection();
+			gumRange.setStart(document.getElementById('gumBox'), 0);
+			gumRange.setEnd(document.getElementById('gumBox'), 0);
+			gumRange.collapse(true);
+			gumSelection.removeAllRanges();
+			gumSelection.addRange(gumRange);
+			gumElement.focus();
+		}
+		function checkForGum() {
+			if($.trim($('#gumBox').text()) == "gum" && gumCount < 100) {
+				gumCount++;
+				console.log(gumCount);
+				setTimeout(function() {
+					gumBox.innerText = "";
+					setUserCaret();
+				}, 50);
+			}
+			if (gumCount >= 100 && gumClicks !== 100) {
+				gumBox.innerText = "";
+				gumBox.setAttribute("contenteditable", false);
+				setTimeout(function() {
+					gumBox.innerText = "Click the \"gum\" button 100 times";
+					setTimeout(function() {
+						gumBox.innerText = "";
+						gumBox.style.display = "none";
+						gumButton.style.display = "block";
+					}, 3000);
+				}, 500);
+			}
+			if (gumClicks == 100) {
+				checkForMug();
+			}
+		}
+		function checkGumButton() {
+			if(gumClicks < 100) {
+				gumClicks++;
+				console.log(gumClicks);
+				gumButton.style.height = 250-(gumClicks*2) + "px";
+				gumButton.style.width = 500-(gumClicks*4) + "px";
+				gumButton.style.fontSize = 100-(0.8*gumClicks) + "px";
+			}
+			if (gumClicks == 100 && mugCount !== 100) {
+					gumBox.style.display = "block";
+					gumButton.style.display = "none";
+					setTimeout(function() {
+						gumBox.innerText = "Type \"mug\" 100 times";
+							setTimeout(function() {
+							gumBox.innerText = "";
+							gumBox.setAttribute("contenteditable", true);
+							}, 3000);
+					}, 500);
+			}
+			if (gumClicks == 100 && mugCount == 100) {
+				checkMugButton();
+			}
+		}
+		function checkForMug() {
+			if($.trim($('#gumBox').text()) == "mug" && mugCount < 100) {
+				mugCount++;
+				console.log(mugCount);
+				setTimeout(function() {
+					gumBox.innerText = "";
+					setUserCaret();
+				}, 50);
+				if (mugCount >= 100) {
+					gumBox.innerText = "";
+					gumBox.setAttribute("contenteditable", false);
+					setTimeout(function() {
+						gumBox.innerText = "Click the \"mug\" button 100 times";
+							setTimeout(function() {
+							gumBox.innerText = "";
+							gumBox.style.display = "none";
+							gumButton.style.display = "block";
+							gumButton.style.height = "125px";
+							gumButton.style.width = "250px";
+							gumButton.style.fontSize = "50px";
+							gumButton.innerText = "Mug."
+						}, 3000);
+					}, 500);
+				}
+			}	
+		}	
+		function resetInterval() {
+			clearInterval(buttonInterval)
+			buttonInterval = setInterval(function() {
+				gumButton.style.left = Math.floor(Math.random() * (81) + 10) + "%";
+				gumButton.style.top = Math.floor(Math.random() * (81) + 10) + "%";
+			}, buttonMoveInterval);
+		}
+		function checkMugButton() {
+			if(mugClicks < 100) {
+				mugClicks++;
+				console.log(mugClicks);
+				gumButton.style.height = 125-(mugClicks) + "px";
+				gumButton.style.width = 250-(mugClicks*2) + "px";
+				gumButton.style.fontSize = 50-(0.4*mugClicks) + "px";
+				gumButton.style.left = Math.floor(Math.random() * (81) + 10) + "%";
+				gumButton.style.top = Math.floor(Math.random() * (81) + 10) + "%";
+				buttonMoveInterval -= 15;
+				console.log(buttonMoveInterval);
+				resetInterval();
+			}
+			if(mugClicks == 100) {
+				gumBox.style.display = "block";
+				gumButton.style.display = "none";
+				setTimeout(function() {
+					gumBox.innerText = "Fine. You win.";
+					setTimeout(function() {
+						gumBox.innerText = "Take it.";
+					}, 2000);
+				}, 500);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="gumBox" style="word-break:break-all;" contenteditable="false" oninput="checkForGum()">You need to stop wanting gum.</div>
+	<button id="gumButton" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); height:250px; width:500px;" onclick="checkGumButton()">Gum.</button>
+</body>
+</html>
